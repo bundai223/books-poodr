@@ -5,9 +5,13 @@ class RevealingReferences
     @wheels = wheelify(data)
   end
 
+  def diameter(wheel)
+    wheel.rim + (wheel.tire * 2)
+  end
+
   def diameters
     wheels.collect {|wheel|
-      wheel.rim + (wheel.tire * 2)
+      diameter(wheel)
     }
   end
 
