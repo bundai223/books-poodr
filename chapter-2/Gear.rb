@@ -1,9 +1,9 @@
 class Gear
   attr_reader :chainring, :cog, :wheel
-  def initialize(chainring, cog, rim, tire)
+  def initialize(chainring, cog, wheel = nil)
     @chainring = chainring
     @cog = cog
-    @wheel = Wheel.new(rim, tire)
+    @wheel = wheel
   end
 
   def ratio
@@ -13,15 +13,29 @@ class Gear
   def gear_inches
     ratio * wheel.diameter
   end
+end
 
-  # Wheelが再利用されないと判断した場合に、別クラスとして分離できる形を取りつつ、内包して決定を保留にすることもできる
-  Wheel = Struct.new(:rim, :tire) do
-    def diameter
-      rim + (tire * 2)
-    end
+class Wheel
+  attr_reader :rim, :tire
+  def initialize(rim, tire)
+    @rim = rim
+    @tire = tire
+  end
+
+  def diameter
+    rim + (tire * 2)
+  end
+
+  def circumferecnce
+    diameter * Math::PI
   end
 end
 
-puts Gear.new(52, 11, 26, 1.5).gear_inches
-puts Gear.new(52, 11, 24, 1.25).gear_inches
+wheel = Wheel.new(26, 1.5)
+puts wheel.circumferecnce
+
+puts Gear.new(52, 11, wheel).gear_inches
+
+puts Gear.new(52, 11).ratio
+puts Gear.new(52, 11).gear_inches
 
